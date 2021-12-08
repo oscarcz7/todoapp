@@ -13,6 +13,7 @@ Vue.use(require('vue-moment'));
 Vue.config.productionTip = false;
 
 import { auth } from "./firebase";
+import vuetify from './plugins/vuetify'
 
 auth.onAuthStateChanged((user) => {
   if (user) {
@@ -26,6 +27,7 @@ auth.onAuthStateChanged((user) => {
   new Vue({
     router,
     store,
-    render: (h) => h(App),
+    vuetify,
+    render: (h) => h(App)
   }).$mount("#app");
 });
