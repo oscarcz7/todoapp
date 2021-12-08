@@ -26,6 +26,21 @@ const routes = [
     meta: { requireAuth: true },
   },
   {
+    path: "/calendario",
+    name: "Calendario",
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/Calendario.vue"),
+    meta: { requireAuth: true },
+  },
+  ,
+  {
+    path: "/tablero",
+    name: "Tablero",
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/Tablero.vue"),
+    meta: { requireAuth: true },
+  },
+  {
     path: "/registro",
     name: "Registro",
     component: () =>

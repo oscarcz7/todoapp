@@ -1,7 +1,8 @@
 <template>
   <div>
-    <h6>Bienvenido {{usuario.email}}</h6>
-
+    <div class="m-4">
+      <h6>Bienvenido {{ usuario.email }}</h6>
+    </div>
     <div class="container mt-3 mb-2">
       <router-link to="/agregar">
         <button type="button" class="btn btn-success">
@@ -28,11 +29,15 @@
         </button>
       </router-link>
     </div>
-    <table class="table">
+    <table class="table table-primary mt-5 text-center shadow table-striped">
       <thead>
         <tr>
           <th scope="col">#</th>
           <th scope="col">Nombre Tarea</th>
+          <th scope="col">Detalle</th>
+          <th scope="col">Fecha Inicio</th>
+          <th scope="col">Fecha Fin</th>
+          <th scope="col">Estado</th>
           <th scope="col">Editar</th>
           <th scope="col">Eliminar</th>
         </tr>
@@ -41,9 +46,13 @@
         <tr v-for="(item, index) in tareas" :key="index">
           <th scope="row">1</th>
           <td>{{ item.nombre }}</td>
+          <td>{{ item.descripcion }}</td>
+          <td>{{ item.fechaInicio }}</td>
+          <td>{{ item.fechaFin }}</td>
+          <td>{{ item.estado }}</td>
           <td>
             <router-link :to="{ name: 'Editar', params: { id: item.id } }">
-              <button class="btn btn-light">EDITAR</button>
+              <button class="btn btn-light rounded">EDITAR</button>
             </router-link>
           </td>
           <td>
@@ -71,24 +80,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.btn-circle.btn-xl {
-  width: 70px;
-  height: 70px;
-  padding: 10px 16px;
-  border-radius: 35px;
-  font-size: 24px;
-  line-height: 1.33;
-}
-
-.btn-circle {
-  width: 30px;
-  height: 30px;
-  padding: 6px 0px;
-  border-radius: 15px;
-  text-align: center;
-  font-size: 12px;
-  line-height: 1.42857;
-}
-</style>

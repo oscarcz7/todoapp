@@ -59,6 +59,9 @@ export default new Vuex.Store({
         .doc(tarea.id)
         .update({
           nombre: tarea.nombre,
+          estado: tarea.estado,
+          fechaInicio: tarea.fechaInicio,
+          fechaFin: tarea.fechaFin
         })
         .then(() => {
           router.push({ name: "Inicio" });
@@ -68,7 +71,11 @@ export default new Vuex.Store({
     agregarTarea({ commit, state }, nombreTarea) {
       db.collection(state.usuario.email)
         .add({
-          nombre: nombreTarea,
+          nombre: nombreTarea.nombre,
+          descripcion: nombreTarea.descripcion,
+          estado: nombreTarea.estado,
+          fechaFin: nombreTarea.fechaFin,
+          fechaInicio: nombreTarea.fechaInicio,
         })
         .then((doc) => {
           router.push({ name: "Inicio" });

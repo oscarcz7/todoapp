@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="text-ceter">
-      <h1>BIENVENIDO A KANBAN TEAM</h1>
+      <h1 class="text-center">BIENVENIDO A KANBAN TEAM</h1>
     </div>
     <form @submit.prevent="ingresoUsuario({ email: email, password: pass })">
       <div class="mb-3">
@@ -26,7 +26,7 @@
       
 
       <button type="submit" class="btn btn-primary" >
-        Registrarme
+        Ingresar
       </button>
     </form>
     <div class="mt-3">
