@@ -8,7 +8,7 @@
           </h3>
 
           <hr />
-          <v-form @submit.prevent="editarTarea(tarea)" mt-3>
+          <v-form @submit.prevent="editarTareaC(tarea)" mt-3>
             <v-text-field
               label="Titulo"
               type="text"
@@ -37,7 +37,11 @@
               v-model="tarea.estado"
               :items="options"
             ></v-select>
-
+            <v-text-field
+              v-model="color"
+              type="color"
+              label="color (click to open color menu)"
+            ></v-text-field>
             <v-btn type="submit" elevation="2" block color="primary"
               >Editar</v-btn
             >
@@ -66,7 +70,7 @@ export default {
     this.getTarea(this.id);
   },
   methods: {
-    ...mapActions(["getTarea", "editarTarea"]),
+    ...mapActions(["getTarea", "editarTareaC"]),
   },
   computed: {
     ...mapState(["tarea"]),

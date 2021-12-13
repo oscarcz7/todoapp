@@ -1,37 +1,46 @@
 <template>
-  <div class="bg-white shadow rounded px-3 pt-3 pb-5 border border-white">
-    <div class="flex justify-between">
-      <p class="text-gray-700 font-semibold font-sans tracking-wide text-sm">{{task.title}}</p>
-    </div>
-    <div class="flex mt-4 justify-between items-center">
-      <span class="text-sm text-gray-600">{{task.date}}</span>
-      <badge v-if="task.type" :color="badgeColor">{{task.type}}</badge>
-    </div>
-  </div>
+  <v-card height="290">
+    <v-card-title>{{ task.name }}</v-card-title>
+    <v-card-text>
+      {{ task.descripcion }}
+    </v-card-text>
+    <v-divider class="mx-4"></v-divider>
+
+    <v-card-title>Fechas</v-card-title>
+
+    <v-card-text>
+      <v-chip-group column>
+        <v-chip class="teal lighten-3 white--text">{{ task.start }}</v-chip>
+        <v-chip class="red lighten-1 white--text">{{ task.end }}</v-chip>
+      </v-chip-group>
+    </v-card-text>
+  </v-card>
 </template>
 <script>
-import Badge from "./Badge.vue";
+import { mapActions, mapState } from "vuex";
+
 export default {
-  components: {
-    Badge
+  components: {},
+  data() {
+    return {
+      individual: [],
+      id: this.$route.params.id,
+    };
   },
   props: {
     task: {
       type: Object,
-      default: () => ({})
-    }
+      default: () => ({}),
+    },
+  },
+  created() {
+    this.getTareas();
+  },
+  methods: {
+    ...mapActions(["getTareas", "eliminarTareaT"]),
   },
   computed: {
-    badgeColor() {
-      const mappings = {
-        Design: "purple",
-        "Feature Request": "teal",
-        Backend: "blue",
-        QA: "green",
-        default: "teal"
-      };
-      return mappings[this.task.type] || mappings.default;
-    }
-  }
+    ...mapState(["tareas", "usuario", "tarea"]),
+  },
 };
 </script>

@@ -7,9 +7,14 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     tareas: [],
-    tarea: { nombre: "", id: "" },
+    tareasIP: [],
+    tareasPH: [],
+    tareasT: [],
+    tarea: { name: "", id: "", color:"", start: "", end: "", descripcion:""},
     usuario: null,
     error: null,
+    perfil: [],
+    notifiacion: false,
   },
   mutations: {
     setTareas(state, payload) {
@@ -24,14 +29,70 @@ export default new Vuex.Store({
     setUsuario(state, payload) {
       state.usuario = payload;
     },
+    setPerfil(state, payload) {
+      state.perfil = payload;
+    },
     setError(state, payload) {
       state.error = payload;
     },
+    setTareasIP(state, payload) {
+      state.tareasIP = payload;
+    },
+    setTareasPH(state, payload) {
+      state.tareasPH = payload;
+    },
+    setTareasT(state, payload) {
+      state.tareasT = payload;
+    },
+    setNotificaion(state, payload) {
+      state.notifiacion = payload;
+    },
   },
   actions: {
+    getPerfil({ commit, state }) {
+      const perfils = [];
+      let correo = state.usuario.email;
+      db.collection("perfil")
+        .where("email", "==", correo)
+        .get()
+        .then((res) => {
+          res.forEach((doc) => {
+            let perfil = doc.data();
+            perfil.id = doc.id;
+            perfils.push(perfil);
+          });
+          commit("setPerfil", perfils);
+        })
+        .catch((error) => console.log(error));
+    },
     getTareas({ commit, state }) {
       const tareas = [];
+      var today = new Date();
+      var date =
+              today.getFullYear() +
+              "-" +
+              (today.getMonth() + 1) +
+              "-" +
+              today.getDate();
+      let datetime = date;
+
       db.collection(state.usuario.email)
+        .get()
+        .then((res) => {
+          res.forEach((doc) => {
+            let tarea = doc.data();
+            tarea.id = doc.id;
+
+            tareas.push(tarea);
+          });
+          commit("setTareas", tareas);
+        })
+        .catch((error) => console.log(error));
+    },
+    getTareasIP({ commit, state }) {
+      const tareas = [];
+      db.collection(state.usuario.email)
+        .where("estado", "==", "En Progreso")
         .get()
         .then((res) => {
           res.forEach((doc) => {
@@ -39,7 +100,39 @@ export default new Vuex.Store({
             tarea.id = doc.id;
             tareas.push(tarea);
           });
-          commit("setTareas", tareas);
+
+          commit("setTareasIP", tareas);
+        })
+        .catch((error) => console.log(error));
+    },
+    getTareasPH({ commit, state }) {
+      const tareas = [];
+      db.collection(state.usuario.email)
+        .where("estado", "==", "Por Hacer")
+        .get()
+        .then((res) => {
+          res.forEach((doc) => {
+            let tarea = doc.data();
+            tarea.id = doc.id;
+            tareas.push(tarea);
+          });
+          commit("setTareasPH", tareas);
+        })
+        .catch((error) => console.log(error));
+    },
+    getTareasT({ commit, state }) {
+      const tareas = [];
+      db.collection(state.usuario.email)
+        .where("estado", "==", "Terminado")
+        .get()
+        .then((res) => {
+          res.forEach((doc) => {
+            let tarea = doc.data();
+            tarea.id = doc.id;
+
+            tareas.push(tarea);
+          });
+          commit("setTareasT", tareas);
         })
         .catch((error) => console.log(error));
     },
@@ -58,27 +151,78 @@ export default new Vuex.Store({
       db.collection(state.usuario.email)
         .doc(tarea.id)
         .update({
-          nombre: tarea.nombre,
+          name: tarea.name,
           estado: tarea.estado,
-          fechaInicio: tarea.fechaInicio,
-          fechaFin: tarea.fechaFin
+          start: tarea.start,
+          end: tarea.end,
+          color: tarea.color,
+          descripcion: tarea.descripcion,
         })
         .then(() => {
           router.push({ name: "Inicio" });
         })
         .catch((error) => console.log(error));
     },
-    agregarTarea({ commit, state }, nombreTarea) {
+    editarTareaP({ commit, state }, tarea) {
+      db.collection(state.usuario.email)
+        .doc(tarea.id)
+        .update({
+          name: tarea.name,
+          estado: tarea.estado,
+          start: tarea.start,
+          end: tarea.end,
+          color: tarea.color,
+          descripcion: tarea.descripcion,
+        })
+        .then(() => {
+          router.push({ name: "Tablero" });
+        })
+        .catch((error) => console.log(error));
+    },
+    editarTareaC({ commit, state }, tarea) {
+      db.collection(state.usuario.email)
+        .doc(tarea.id)
+        .update({
+          name: tarea.name,
+          estado: tarea.estado,
+          start: tarea.start,
+          end: tarea.end,
+          color: tarea.color,
+          descripcion: tarea.descripcion,
+        })
+        .then(() => {
+          router.push({ name: "Calendario" });
+        })
+        .catch((error) => console.log(error));
+    },
+    
+    agregarTarea({ commit, state }, nameTarea) {
       db.collection(state.usuario.email)
         .add({
-          nombre: nombreTarea.nombre,
-          descripcion: nombreTarea.descripcion,
-          estado: nombreTarea.estado,
-          fechaFin: nombreTarea.fechaFin,
-          fechaInicio: nombreTarea.fechaInicio,
+          name: nameTarea.name,
+          descripcion: nameTarea.descripcion,
+          estado: nameTarea.estado,
+          end: nameTarea.end,
+          start: nameTarea.start,
+          color: nameTarea.color,
         })
         .then((doc) => {
           router.push({ name: "Inicio" });
+        })
+        .catch((error) => console.log(error));
+    },
+    agregarTareaC({ commit, state }, nameTarea) {
+      db.collection(state.usuario.email)
+        .add({
+          name: nameTarea.name,
+          descripcion: nameTarea.descripcion,
+          estado: nameTarea.estado,
+          end: nameTarea.end,
+          start: nameTarea.start,
+          color: nameTarea.color,
+        })
+        .then((doc) => {
+          router.push({ name: "Tablero" });
         })
         .catch((error) => console.log(error));
     },
@@ -88,6 +232,27 @@ export default new Vuex.Store({
         .delete()
         .then(() => {
           commit("setEliminarTarea", id);
+          router.push({ name: "Inicio" });
+        })
+        .catch((error) => console.log(error));
+    },
+    eliminarTareaC({ commit, state }, id) {
+      db.collection(state.usuario.email)
+        .doc(id)
+        .delete()
+        .then(() => {
+          commit("setEliminarTarea", id);
+          router.push({ name: "Calendar" });
+        })
+        .catch((error) => console.log(error));
+    },
+    eliminarTareaT({ commit, state }, id) {
+      db.collection(state.usuario.email)
+        .doc(id)
+        .delete()
+        .then(() => {
+          commit("setEliminarTarea", id);
+          router.push({ name: "Tablero" });
         })
         .catch((error) => console.log(error));
     },
@@ -95,42 +260,55 @@ export default new Vuex.Store({
       auth
         .createUserWithEmailAndPassword(usuario.email, usuario.password)
         .then((res) => {
-          console.log(res);
           const usuarioCreado = {
             email: res.user.email,
             uid: res.user.uid,
           };
-
-          //creando tareas
-
           db.collection(res.user.email)
             .add({
-              nombre: "tarea de ejepmplo",
+              name: "Esta es una tarea de prueba",
+              descripcion: "Esta es una tarea de prueba",
+              estado: "Por Hacer",
+              end: "",
+              start: "",
+              color: "",
             })
             .then((doc) => {
               commit("setUsuario", usuarioCreado);
-              router.push("/");
+              router.push("/perfil");
             })
             .catch((err) => {
               console.log(error);
             });
         })
         .catch((error) => {
-          console.log(error);
           commit("setError", error.message);
         });
+    },
+    crearPerfil({ commit, state }, perfil) {
+      db.collection("perfil")
+        .add({
+          username: perfil.username,
+          lastname: perfil.lastname,
+          age: perfil.age,
+          birthdate: perfil.birthdate,
+          email: state.usuario.email,
+        })
+        .then((doc) => {
+          router.push({ name: "Inicio" });
+        })
+        .catch((error) => console.log(error));
     },
     ingresoUsuario({ commit }, usuario) {
       auth
         .signInWithEmailAndPassword(usuario.email, usuario.password)
         .then((res) => {
-          console.log(res);
           const usuarioLogueado = {
             email: res.user.email,
             uid: res.user.uid,
           };
           commit("setUsuario", usuarioLogueado);
-          router.push("/");
+          router.push("/inicio");
         })
         .catch((error) => {
           console.log(error);

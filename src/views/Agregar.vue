@@ -4,65 +4,55 @@
       <v-row>
         <v-col>
           <h1>Agregar nueva tarea</h1>
-          <form
+          <v-form
             @submit.prevent="
               agregarTarea({
-                nombre: nombre,
+                name: name,
                 descripcion: descripcion,
-                fechaInicio: fechaInicio,
-                fechaFin: fechaFin,
+                start: start,
+                end: end,
                 estado: estado,
+                color: color
               })
             "
           >
-            <div class="row mb-2">
-              <div class="col-md-4">
-                <input
-                  type="text"
-                  v-model="nombre"
-                  class="form-control"
-                  placeholder="Nombre de la tarea"
-                />
-              </div>
-              <div class="col-md-4">
-                <input
-                  type="text"
-                  v-model="descripcion"
-                  class="form-control"
-                  placeholder="Descripcion de la tarea"
-                />
-              </div>
-            </div>
-
-            <div class="row mb-2">
-              <div class="col-md-4">
-                <input type="date" v-model="fechaInicio" class="form-control" />
-              </div>
-              <div class="col-md-4">
-                <input type="date" v-model="fechaFin" class="form-control" />
-              </div>
-            </div>
-            <div class="row mb-2">
-              <div class="col-md-4">
-                <label for="estado" class="fw-bold">Estado</label>
-                <b-form-select
-                  name="estado"
-                  class="form-control"
-                  v-model="estado"
-                  :options="options"
-                ></b-form-select>
-              </div>
-            </div>
-            <div class="row mb-2">
-              <div class="col-md-6">
-                <div class="d-grid gap-2">
-                  <button type="submit" class="btn btn-primary btn-lg">
-                    Crear
-                  </button>
-                </div>
-              </div>
-            </div>
-          </form>
+            <v-text-field
+              label="Titulo"
+              type="text"
+              v-model="name"
+              class="form-control"
+            />
+            <v-text-field
+              label="Detalle"
+              type="text"
+              v-model="descripcion"
+              class="form-control"
+            />
+            <v-text-field
+              label="Fecha Inicio"
+              type="date"
+              v-model="start"
+              class="form-control"
+            />
+            <v-text-field
+              label="Fecha Fin"
+              type="date"
+              v-model="end"
+              class="form-control"
+            />
+           
+            <v-select
+              label="Estado"
+              name="estado"
+              class="form-control"
+              v-model="estado"
+              :items="options"
+            ></v-select>
+            <v-text-field v-model="color" type="color" label="color (click to open color menu)"></v-text-field>
+            <v-btn type="submit" elevation="2" block color="primary">
+              Crear
+            </v-btn>
+          </v-form>
         </v-col>
       </v-row>
     </v-container>
@@ -75,11 +65,13 @@ export default {
   name: "Agregar",
   data() {
     return {
-      nombre: "",
+      name: "",
       descripcion: "",
-      fechaFin: "",
-      fechaInicio: "",
+      end: null,
+      start: null,
       estado: null,
+      color: null, // default event color
+      items: ["Por Hacer", "Item 2", "En Progreso", "Terminado"],
       options: [
         { value: "Por Hacer", text: "Por Hacer" },
         { value: "En Progreso", text: "En Progreso" },

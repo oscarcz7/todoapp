@@ -3,12 +3,9 @@ import App from "./App.vue";
 import "./registerServiceWorker";
 import router from "./router";
 import store from "./store";
+import VueTextareaAutosize from 'vue-textarea-autosize'
 
-import BootstrapVue from 'bootstrap-vue/dist/bootstrap-vue.esm';
-import 'bootstrap-vue/dist/bootstrap-vue.css';
-import 'bootstrap/dist/css/bootstrap.css';
-
-Vue.use(BootstrapVue);
+Vue.use(VueTextareaAutosize)
 Vue.use(require('vue-moment'));
 Vue.config.productionTip = false;
 
@@ -17,10 +14,8 @@ import vuetify from './plugins/vuetify'
 
 auth.onAuthStateChanged((user) => {
   if (user) {
-    console.log(user);
     store.dispatch("detectarUsuario", { email: user.email, uid: user.uid });
   } else {
-    console.log(user);
     store.dispatch("detectarUsuario", user);
   }
 

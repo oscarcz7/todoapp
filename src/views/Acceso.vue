@@ -1,45 +1,41 @@
 <template>
-  <div>
-    <v-container>
-      <v-row>
-        <v-col>
-          <div class="text-ceter">
-            <h1 class="text-center">BIENVENIDO A KANBAN TEAM</h1>
-          </div>
-          <form
-            @submit.prevent="ingresoUsuario({ email: email, password: pass })"
-          >
-            <div class="mb-3">
-              <label for="exampleInputEmail1" class="form-label">Email</label>
-              <input
+  <v-container >
+    <v-layout row wrap>
+      <v-flex xs12 class="text-center" mt-5>
+        <h1>Ingresar a la App</h1>
+      </v-flex>
+      <v-flex xs12 sm6 offset-sm3 mt-3>
+        <form @submit.prevent="ingresoUsuario({ email: email, password: pass })">
+          <v-layout column>
+            <v-flex>
+              <v-text-field
+                name="email"
+                label="Email"
+                id="email"
                 type="email"
-                class="form-control"
-                id="exampleInputEmail1"
-                aria-describedby="emailHelp"
                 v-model="email"
-              />
-            </div>
-            <div class="mb-3">
-              <label for="exampleInputPassword1" class="form-label"
-                >Contraseña</label
-              >
-              <input
+                required></v-text-field>
+            </v-flex>
+            <v-flex>
+              <v-text-field
+                name="password"
+                label="Password"
+                id="password"
                 type="password"
-                class="form-control"
-                id="exampleInputPassword1"
                 v-model="pass"
-              />
-            </div>
-
-            <button type="submit" class="btn btn-primary">Ingresar</button>
-          </form>
-          <div class="mt-3">
-            <p class="red">{{ error }}</p>
-          </div>
-        </v-col>
-      </v-row>
-    </v-container>
-  </div>
+                required></v-text-field>
+            </v-flex>
+            <v-flex class="text-center" mt-5>
+              <v-btn color="primary" type="submit">Ingresar</v-btn>
+            </v-flex>
+          </v-layout>
+        </form>
+        <v-container>
+          <p class="red">{{ error }}</p>
+        </v-container>
+      </v-flex>
+    </v-layout>
+  </v-container>
 </template>
 
 <script>

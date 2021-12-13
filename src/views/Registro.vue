@@ -1,61 +1,55 @@
 <template>
-  <div>
-    <h1 class="text-center">Registrate ahora!</h1>
-    <v-container>
-      <v-row>
-        <v-col>
-          <form
-            @submit.prevent="crearUsuario({ email: email, password: pass1 })"
-            class="col-md-12"
-          >
-            <div class="mb-3">
-              <label for="exampleInputEmail1" class="form-label">Email</label>
-              <input
+  <v-container fluid>
+    <v-layout row wrap>
+      <v-flex xs12 class="text-center" mt-5>
+        <h1>REGISTRO</h1>
+      </v-flex>
+      <v-flex xs12 sm6 offset-sm3 mt-3>
+        <form @submit.prevent="crearUsuario({ email: email, password: pass1 })">
+          <v-layout column>
+            <v-flex>
+              <v-text-field
                 type="email"
                 class="form-control"
                 id="exampleInputEmail1"
-                aria-describedby="emailHelp"
+                label="Email"
                 v-model="email"
-              />
-            </div>
-            <div class="mb-3">
-              <label for="exampleInputPassword1" class="form-label"
-                >Contraseña</label
-              >
-              <input
+                name="email"
+                required
+              ></v-text-field>
+            </v-flex>
+            <v-flex>
+              <v-text-field
+                name="password"
+                label="Password"
+                id="password"
                 type="password"
-                class="form-control"
-                id="exampleInputPassword1"
-                v-model="pass1"
-              />
-            </div>
-            <div class="mb-3">
-              <label for="exampleInputPassword1" class="form-label"
-                >Repita la Contraseña</label
-              >
-              <input
+                 v-model="pass1"
+                required
+              ></v-text-field>
+            </v-flex>
+            <v-flex>
+              <v-text-field
+                name="confirmPassword"
+                label="Repita la Contraseña"
+                id="confirmPassword"
                 type="password"
-                class="form-control"
-                id="exampleInputPassword2"
                 v-model="pass2"
-              />
-            </div>
+                required
+              ></v-text-field>
+            </v-flex>
+            <v-flex class="text-center" mt-5>
+              <v-btn color="primary" type="submit" :disabled="!desactivar">Registrarme</v-btn>
+            </v-flex>
+          </v-layout>
+        </form>
 
-            <button
-              type="submit"
-              class="btn btn-primary"
-              :disabled="!desactivar"
-            >
-              Registrarme
-            </button>
-          </form>
-          <div class="mt-3">
-            <p class="red">{{ error }}</p>
-          </div>
-        </v-col>
-      </v-row>
-    </v-container>
-  </div>
+        <v-container>
+          <p>{{error}}</p>
+        </v-container>
+      </v-flex>
+    </v-layout>
+  </v-container>
 </template>
 
 <script>

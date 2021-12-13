@@ -1,8 +1,10 @@
 <template>
-  <div>
-    <div class="m-4">
-      <h6>Bienvenido {{ usuario.email }}</h6>
-    </div>
+  <v-container class="mt-4">
+    <v-row>
+      <h2 v-for="(item, index) in perfil" :key="index">
+        Bienvenido {{ item.username }} {{ item.lastname }}
+      </h2>
+    </v-row>
     <div class="container mt-3 mb-2">
       <v-btn href="/agregar" text color="green">
         <span class="mr-2">Agregar Tarea</span>
@@ -11,9 +13,7 @@
     <v-container>
       <v-row>
         <v-col>
-          <v-simple-table
-            class="table table-primary mt-5 text-centers shadow table-striped"
-          >
+          <v-simple-table>
             <template v-slot:default>
               <thead>
                 <tr>
@@ -25,15 +25,16 @@
                   <th scope="col">Estado</th>
                   <th scope="col">Editar</th>
                   <th scope="col">Eliminar</th>
+                  <th scope="col">Alertas</th>
                 </tr>
               </thead>
               <tbody>
                 <tr v-for="(item, index) in tareas" :key="index">
                   <th scope="row">1</th>
-                  <td>{{ item.nombre }}</td>
+                  <td>{{ item.name }}</td>
                   <td>{{ item.descripcion }}</td>
-                  <td>{{ item.fechaInicio }}</td>
-                  <td>{{ item.fechaFin }}</td>
+                  <td>{{ item.start }}</td>
+                  <td>{{ item.end }}</td>
                   <td>{{ item.estado }}</td>
                   <td>
                     <v-btn
@@ -59,6 +60,35 @@
                       <v-icon dark> mdi-minus </v-icon>
                     </v-btn>
                   </td>
+                  <td>
+                    <v-badge
+                      v-if="item.end > today"
+                      :content="1"
+                      :value="1"
+                      color="red"
+                      overlap
+                    >
+                      <v-icon large> dashboard</v-icon>
+                    </v-badge>
+                    <v-badge
+                      v-else-if="item.end == today"
+                      :content="1"
+                      :value="1"
+                      color="orange"
+                      overlap
+                    >
+                      <v-icon large> dashboard</v-icon>
+                    </v-badge>
+                    <v-badge
+                      v-if="item.end < today  "
+                      :content="1"
+                      :value="1"
+                      color="green"
+                      overlap
+                    >
+                      <v-icon large> dashboard</v-icon>
+                    </v-badge>
+                  </td>
                 </tr>
               </tbody>
             </template>
@@ -66,21 +96,29 @@
         </v-col>
       </v-row>
     </v-container>
-  </div>
+  </v-container>
 </template>
 <script>
 import { mapActions, mapState } from "vuex";
+import moment from "moment";
 export default {
   name: "Inicio",
-
+  data() {
+    return {
+      messages: 0,
+      today: moment().format("YYYY-MM-DD"),
+    };
+  },
   created() {
     this.getTareas();
+    this.getPerfil();
   },
   methods: {
-    ...mapActions(["getTareas", "eliminarTarea"]),
+    ...mapActions(["getTareas", "eliminarTarea", "getPerfil"]),
   },
   computed: {
-    ...mapState(["tareas", "usuario"]),
+    ...mapState(["tareas", "usuario", "perfil"]),
   },
+  
 };
 </script>

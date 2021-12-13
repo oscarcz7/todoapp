@@ -6,51 +6,73 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: "/",
+    name: "Home",
+    component: () => import("../views/Home.vue"),
+    meta: { requireAuth: true },
+  },
+  {
+    path: "/inicio",
     name: "Inicio",
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/Inicio.vue"),
+    component: () => import("../views/Inicio.vue"),
     meta: { requireAuth: true },
   },
   {
     path: "/editar/:id",
     name: "Editar",
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/Editar.vue"),
+    component: () => import("../views/Editar.vue"),
+    meta: { requireAuth: true },
+  },
+  {
+    path: "/popedit/:id",
+    name: "Pop",
+    component: () => import("../views/EditPopUp.vue"),
+    meta: { requireAuth: true },
+  },
+  {
+    path: "/calendaredit/:id",
+    name: "CalEdit",
+    component: () => import("../views/EditarCalendar.vue"),
     meta: { requireAuth: true },
   },
   {
     path: "/agregar",
     name: "Agregar",
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/Agregar.vue"),
+    component: () => import("../views/Agregar.vue"),
     meta: { requireAuth: true },
   },
   {
     path: "/calendario",
     name: "Calendario",
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/Calendario.vue"),
+    component: () => import("../views/Calendario.vue"),
     meta: { requireAuth: true },
   },
-  ,
   {
     path: "/tablero",
     name: "Tablero",
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/Tablero.vue"),
+    component: () => import("../views/Tablero.vue"),
+    meta: { requireAuth: true },
+  },
+  {
+    path: "/tableros",
+    name: "Tableros",
+    component: () => import("../views/Tableros.vue"),
     meta: { requireAuth: true },
   },
   {
     path: "/registro",
     name: "Registro",
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/Registro.vue"),
+    component: () => import("../views/Registro.vue"),
   },
   {
     path: "/acceso",
     name: "Acceso",
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/Acceso.vue"),
+    component: () => import("../views/Acceso.vue"),
+  },
+  {
+    path: "/perfil",
+    name: "Perfil",
+    component: () => import("../views/Perfil.vue"),
+    meta: { requireAuth: true },
   },
 ];
 
@@ -63,7 +85,6 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     const usuario = auth.currentUser;
-    console.log("usuario", usuario)
     if (usuario) {
       next({ path: "/acceso", query: { redirect: to.fullPath } });
     } else {
