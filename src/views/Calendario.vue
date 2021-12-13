@@ -1,27 +1,37 @@
 <template>
   <v-card class="mt-2">
+    <v-tour name="myTour" :steps="steps"></v-tour>
     <v-sheet height="74" class="mx-auto">
       <v-toolbar dense color="white">
-        <v-btn fab dark small color="blue" @click.stop="dialog = true">
+        <v-btn
+          fab
+          dark
+          small
+          color="blue"
+          @click.stop="dialog = true"
+          id="v-step-0"
+        >
           <v-icon dark> mdi-plus </v-icon>
         </v-btn>
-        <v-btn outlined class="mx-2" @click="setToday"> Hoy </v-btn>
-        <v-btn fab text small @click="prev">
+        <v-btn outlined class="mx-2" @click="setToday" id="v-step-1">
+          Hoy
+        </v-btn>
+        <v-btn fab text small @click="prev" id="v-step-2">
           <v-icon small>mdi-chevron-left</v-icon>
         </v-btn>
-        <v-btn fab text small @click="next">
+        <v-btn fab text small @click="next" id="v-step-3">
           <v-icon small>mdi-chevron-right</v-icon>
         </v-btn>
         <v-toolbar-title class="d-none d-lg-block">{{ title }}</v-toolbar-title>
         <div class="flex-grow-1"></div>
-        <v-menu bottom right>
-          <template v-slot:activator="{ on }">
-            <v-btn outlined v-on="on">
+        <v-menu bottom right >
+          <template v-slot:activator="{ on }" >
+            <v-btn outlined v-on="on" id="v-step-4">
               <span>{{ typeToLabel[type] }}</span>
               <v-icon right>mdi-menu-down</v-icon>
             </v-btn>
           </template>
-          <v-list>
+          <v-list >
             <v-list-item @click="type = 'day'">
               <v-list-item-title>Dia</v-list-item-title>
             </v-list-item>
@@ -44,18 +54,20 @@
         <v-container>
           <v-form
             @submit.prevent="
-              agregarTareaC({
+              agregarTarea({
                 name: name,
                 descripcion: descripcion,
                 start: start,
+                hourstart: hourstart,
                 end: end,
+                hourend: hourend,
                 estado: estado,
                 color: color,
               })
             "
           >
             <v-text-field
-              label="name"
+              label="Titulo"
               type="text"
               v-model="name"
               class="form-control"
@@ -72,13 +84,26 @@
               v-model="start"
               class="form-control"
             />
+
+            <v-text-field
+              label="Hora Inicio"
+              type="time"
+              v-model="hourstart"
+              class="form-control"
+            />
+
             <v-text-field
               label="Fecha Fin"
               type="date"
               v-model="end"
               class="form-control"
             />
-
+            <v-text-field
+              label="Hora Fin"
+              type="time"
+              v-model="hourend"
+              class="form-control"
+            />
             <v-select
               label="Estado"
               name="estado"
@@ -102,20 +127,22 @@
     <v-dialog v-model="dialogDate" max-width="700">
       <v-card>
         <v-container>
-          <v-form
+           <v-form
             @submit.prevent="
-              agregarTareaC({
+              agregarTarea({
                 name: name,
                 descripcion: descripcion,
                 start: start,
+                hourstart: hourstart,
                 end: end,
+                hourend: hourend,
                 estado: estado,
                 color: color,
               })
             "
           >
             <v-text-field
-              label="name"
+              label="Titulo"
               type="text"
               v-model="name"
               class="form-control"
@@ -132,13 +159,26 @@
               v-model="start"
               class="form-control"
             />
+
+            <v-text-field
+              label="Hora Inicio"
+              type="time"
+              v-model="hourstart"
+              class="form-control"
+            />
+
             <v-text-field
               label="Fecha Fin"
               type="date"
               v-model="end"
               class="form-control"
             />
-
+            <v-text-field
+              label="Hora Fin"
+              type="time"
+              v-model="hourend"
+              class="form-control"
+            />
             <v-select
               label="Estado"
               name="estado"
@@ -173,6 +213,7 @@
         @click:more="viewDay"
         @click:date="setDialogDate"
         @change="updateRange"
+        id="v-step-5"
       ></v-calendar>
       <v-menu
         v-model="selectedOpen"
@@ -261,6 +302,32 @@ export default {
     events: [],
     dialog: false,
     dialogDate: false,
+    steps: [
+      {
+        target: "#v-step-0", // We're using document.querySelector() under the hood
+        content: `Agrega nuevas tareas a tu calendario`,
+      },
+      {
+        target: "#v-step-1",
+        content: "Si te perdiste regresa a la marca de este dia",
+      },
+      {
+        target: "#v-step-2",
+        content: "Regresa un dia, semana! ",
+      },
+      {
+        target: "#v-step-3",
+        content: "Adelanta un dia, semana! ",
+      },
+      {
+        target: "#v-step-4",
+        content: "Selecciona la vista que necesites!",
+      },
+      {
+        target: "#v-step-5",
+        content: "Visualiza tus tareas, editalas o eliminalas!",
+      },
+    ],
   }),
   computed: {
     title() {
@@ -345,6 +412,9 @@ export default {
         ? "th"
         : ["th", "st", "nd", "rd", "th", "th", "th", "th", "th", "th"][d % 10];
     },
+  },
+  mounted: function () {
+    this.$tours["myTour"].start();
   },
 };
 </script>

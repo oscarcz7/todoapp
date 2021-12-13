@@ -3,7 +3,7 @@
     <v-container>
       <v-row>
         <v-col>
-          <h1>Agregar nueva tarea</h1>
+          <h1>CREA TU PERFIL</h1>
           <v-form
             @submit.prevent="
               crearPerfil({

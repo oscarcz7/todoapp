@@ -4,7 +4,11 @@ import "./registerServiceWorker";
 import router from "./router";
 import store from "./store";
 import VueTextareaAutosize from 'vue-textarea-autosize'
+import VueTour from 'vue-tour'
 
+require('vue-tour/dist/vue-tour.css')
+
+Vue.use(VueTour)
 Vue.use(VueTextareaAutosize)
 Vue.use(require('vue-moment'));
 Vue.config.productionTip = false;

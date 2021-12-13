@@ -10,9 +10,11 @@
                 name: name,
                 descripcion: descripcion,
                 start: start,
+                hourstart: hourstart,
                 end: end,
+                hourend: hourend,
                 estado: estado,
-                color: color
+                color: color,
               })
             "
           >
@@ -34,13 +36,26 @@
               v-model="start"
               class="form-control"
             />
+
+            <v-text-field
+              label="Hora Inicio"
+              type="time"
+              v-model="hourstart"
+              class="form-control"
+            />
+
             <v-text-field
               label="Fecha Fin"
               type="date"
               v-model="end"
               class="form-control"
             />
-           
+            <v-text-field
+              label="Hora Fin"
+              type="time"
+              v-model="hourend"
+              class="form-control"
+            />
             <v-select
               label="Estado"
               name="estado"
@@ -48,7 +63,11 @@
               v-model="estado"
               :items="options"
             ></v-select>
-            <v-text-field v-model="color" type="color" label="color (click to open color menu)"></v-text-field>
+            <v-text-field
+              v-model="color"
+              type="color"
+              label="color (click to open color menu)"
+            ></v-text-field>
             <v-btn type="submit" elevation="2" block color="primary">
               Crear
             </v-btn>

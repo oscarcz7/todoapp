@@ -80,6 +80,7 @@
               v-for="item in menuItems"
               :key="item.title"
               :to="item.path"
+              :class="item.class"
             >
               <v-list-item-icon>
                 <v-icon v-text="item.icon"></v-icon>
@@ -95,6 +96,7 @@
         <router-view></router-view>
       </v-main>
     </v-card>
+    <v-tour name="myTour" :steps="steps"></v-tour>
   </v-app>
 </template>
 
@@ -109,8 +111,18 @@ export default {
       today: "",
       appTitle: "KANBAN TEAM",
       menuItems: [
-        { title: "Registrarse", path: "/registro", icon: "face" },
-        { title: "Ingresar", path: "/acceso", icon: "lock_open" },
+        {
+          title: "Registrarse",
+          path: "/registro",
+          icon: "face",
+          class: "v-step-0",
+        },
+        {
+          title: "Ingresar",
+          path: "/acceso",
+          icon: "lock_open",
+          class: "v-step-1",
+        },
       ],
       menuItemsIn: [
         { title: "Inicio", path: "/inicio", icon: "home" },
@@ -119,6 +131,16 @@ export default {
       ],
       drawer: false,
       group: null,
+      steps: [
+        {
+          target: ".v-step-0", // We're using document.querySelector() under the hood
+          content: `Registrate <strong>con el correo que mas te guste</strong>!`,
+        },
+        {
+          target: ".v-step-1",
+          content: "O ingresa si ya tienes tu cuenta!",
+        },
+      ],
     };
   },
   watch: {
@@ -127,14 +149,15 @@ export default {
     },
   },
   methods: {
-    ...mapActions(["cerrarSesion", "getTareas"]),
+    ...mapActions(["cerrarSesion"]),
   },
   computed: {
     ...mapGetters(["existeUsuario"]),
     ...mapState(["tareas"]),
   },
-  created() {
-    this.getTareas();
+  mounted: function () {
+    this.$tours["myTour"].start();
   },
+  
 };
 </script>

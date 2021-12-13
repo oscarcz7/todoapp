@@ -17,17 +17,29 @@
               class="form-control"
             />
             <v-text-field
-              label="Fecha Incio"
+              label="Fecha Inicio"
               type="date"
-              name="startn"
-              v-model="tarea.start"
+              v-model="start"
               class="form-control"
             />
+
+            <v-text-field
+              label="Hora Inicio"
+              type="time"
+              v-model="hourstart"
+              class="form-control"
+            />
+
             <v-text-field
               label="Fecha Fin"
               type="date"
-              name="end"
-              v-model="tarea.end"
+              v-model="end"
+              class="form-control"
+            />
+            <v-text-field
+              label="Hora Fin"
+              type="time"
+              v-model="hourend"
               class="form-control"
             />
             <v-select

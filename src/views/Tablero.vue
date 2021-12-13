@@ -11,11 +11,10 @@
         <v-col>
           <v-container>
             <v-row>
-              <v-col  v-for="column in columns" :key="column.title">
-                <h3 class="text-center "> {{ column.title }}</h3>
+              <v-col v-for="column in columns" :key="column.title">
+                <h3 class="text-center">{{ column.title }}</h3>
                 <!-- Draggable component comes from vuedraggable. It provides drag & drop functionality -->
                 <draggable
-                  
                   :list="column.tasks"
                   :animation="200"
                   ghost-class="ghost-card"
@@ -29,7 +28,7 @@
                     class="mt-3 cursor-move"
                   ></task-card>
                   <!-- </transition-group> -->
-                </draggable>
+                </draggable>                
               </v-col>
             </v-row>
           </v-container>
@@ -37,13 +36,11 @@
       </v-row>
       <v-dialog v-model="dialog" width="300">
         <v-card>
-          <v-color-picker
-            elevation="15"
-            @input="onInput"
-          ></v-color-picker>
+          <v-color-picker elevation="15" @input="onInput"></v-color-picker>
         </v-card>
       </v-dialog>
     </v-container>
+    
   </div>
 </template>
 
@@ -61,50 +58,25 @@ export default {
     return {
       dialog: false,
       color: null,
-      columns: [
-        {
-          title: "Por Hacer",
-          tasks: null,
-        },
-        {
-          title: "En Progreso",
-          tasks: null,
-        },
-        {
-          title: "Terminado",
-          tasks: null,
-        },
-      ],
     };
   },
   mounted() {
-    if (
-      this.columns[0].tasks == null ||
-      this.columns[1].tasks == null ||
-      this.columns[2].tasks == null
-    ) {
-      this.columns[0].tasks = this.tareasPH ? this.tareasPH : null;
-      this.columns[1].tasks = this.tareasIP ? this.tareasIP : null;
-      this.columns[2].tasks = this.tareasT ? this.tareasT : null;
-    }
+    this.addColumns();
   },
   methods: {
     onInput(val) {
       this.color = val.hex;
     },
-    ...mapActions(["getTareasIP", "getTareasPH", "getTareasT"]),
+    ...mapActions(["getTareasIP", "getTareasPH", "getTareasT", "addColumns"]),
   },
   created() {
     this.getTareasIP();
     this.getTareasPH();
     this.getTareasT();
-    //this.columns[0].tasks = this.tareasPH ? this.tareasPH : null;
-    //this.columns[1].tasks = this.tareasIP ? this.tareasIP : null;
-    //this.columns[2].tasks = this.tareasT ? this.tareasT : null;
+    this.addColumns();
   },
-
   computed: {
-    ...mapState(["tareasIP", "tareasPH", "tareasT"]),
+    ...mapState(["tareasIP", "tareasPH", "tareasT", "columns"]),
   },
 };
 </script>

@@ -10,11 +10,12 @@ export default new Vuex.Store({
     tareasIP: [],
     tareasPH: [],
     tareasT: [],
-    tarea: { name: "", id: "", color:"", start: "", end: "", descripcion:""},
+    tarea: { name: "", id: "", color: "", start: "", end: "", descripcion: "" },
     usuario: null,
     error: null,
     perfil: [],
     notifiacion: false,
+    columns: [],
   },
   mutations: {
     setTareas(state, payload) {
@@ -47,8 +48,28 @@ export default new Vuex.Store({
     setNotificaion(state, payload) {
       state.notifiacion = payload;
     },
+    setColumns(state, payload) {
+      state.columns = payload;
+    },
   },
   actions: {
+    addColumns({ commit, state }) {
+      let column = [
+        {
+          title: "Por Hacer",
+          tasks: state.tareasPH ? state.tareasPH : null,
+        },
+        {
+          title: "En Progreso",
+          tasks: state.tareasIP ? state.tareasIP : null,
+        },
+        {
+          title: "Terminado",
+          tasks: state.tareasT ? state.tareasT : null,
+        },
+      ];
+      commit("setColumns", column);
+    },
     getPerfil({ commit, state }) {
       const perfils = [];
       let correo = state.usuario.email;
@@ -67,15 +88,6 @@ export default new Vuex.Store({
     },
     getTareas({ commit, state }) {
       const tareas = [];
-      var today = new Date();
-      var date =
-              today.getFullYear() +
-              "-" +
-              (today.getMonth() + 1) +
-              "-" +
-              today.getDate();
-      let datetime = date;
-
       db.collection(state.usuario.email)
         .get()
         .then((res) => {
@@ -89,6 +101,7 @@ export default new Vuex.Store({
         })
         .catch((error) => console.log(error));
     },
+
     getTareasIP({ commit, state }) {
       const tareas = [];
       db.collection(state.usuario.email)
@@ -154,6 +167,8 @@ export default new Vuex.Store({
           name: tarea.name,
           estado: tarea.estado,
           start: tarea.start,
+          hourend: tarea.hourend,
+          hourstart: tarea.hourstart,
           end: tarea.end,
           color: tarea.color,
           descripcion: tarea.descripcion,
@@ -171,6 +186,8 @@ export default new Vuex.Store({
           estado: tarea.estado,
           start: tarea.start,
           end: tarea.end,
+          hourend: tarea.hourend,
+          hourstart: tarea.hourstart,
           color: tarea.color,
           descripcion: tarea.descripcion,
         })
@@ -187,6 +204,8 @@ export default new Vuex.Store({
           estado: tarea.estado,
           start: tarea.start,
           end: tarea.end,
+          hourend: tarea.hourend,
+          hourstart: tarea.hourstart,
           color: tarea.color,
           descripcion: tarea.descripcion,
         })
@@ -195,7 +214,7 @@ export default new Vuex.Store({
         })
         .catch((error) => console.log(error));
     },
-    
+
     agregarTarea({ commit, state }, nameTarea) {
       db.collection(state.usuario.email)
         .add({
@@ -203,6 +222,8 @@ export default new Vuex.Store({
           descripcion: nameTarea.descripcion,
           estado: nameTarea.estado,
           end: nameTarea.end,
+          hourend: nameTarea.hourend,
+          hourstart: nameTarea.hourstart,
           start: nameTarea.start,
           color: nameTarea.color,
         })
@@ -219,6 +240,8 @@ export default new Vuex.Store({
           estado: nameTarea.estado,
           end: nameTarea.end,
           start: nameTarea.start,
+          hourend: nameTarea.hourend,
+          hourstart: nameTarea.hourstart,
           color: nameTarea.color,
         })
         .then((doc) => {
@@ -272,6 +295,9 @@ export default new Vuex.Store({
               end: "",
               start: "",
               color: "",
+
+              hourend: "",
+              hourstart: "",
             })
             .then((doc) => {
               commit("setUsuario", usuarioCreado);

@@ -1,5 +1,6 @@
 <template>
   <v-container class="mt-4">
+    <v-tour name="myTour" :steps="steps"></v-tour>
     <v-row>
       <h2 v-for="(item, index) in perfil" :key="index">
         Bienvenido {{ item.username }} {{ item.lastname }}
@@ -7,7 +8,7 @@
     </v-row>
     <div class="container mt-3 mb-2">
       <v-btn href="/agregar" text color="green">
-        <span class="mr-2">Agregar Tarea</span>
+        <span class="mr-2" id="v-step-0">Agregar Tarea</span>
       </v-btn>
     </div>
     <v-container>
@@ -44,6 +45,7 @@
                       dark
                       small
                       color="cyan"
+                      id="v-step-1"
                     >
                       <v-icon dark> mdi-pencil </v-icon>
                     </v-btn>
@@ -56,6 +58,7 @@
                       dark
                       small
                       color="red"
+                      id="v-step-2"
                     >
                       <v-icon dark> mdi-minus </v-icon>
                     </v-btn>
@@ -67,6 +70,7 @@
                       :value="1"
                       color="red"
                       overlap
+                      id="v-step-3"
                     >
                       <v-icon large> dashboard</v-icon>
                     </v-badge>
@@ -76,15 +80,17 @@
                       :value="1"
                       color="orange"
                       overlap
+                      id="v-step-3"
                     >
                       <v-icon large> dashboard</v-icon>
                     </v-badge>
                     <v-badge
-                      v-if="item.end < today  "
+                      v-if="item.end < today"
                       :content="1"
                       :value="1"
                       color="green"
                       overlap
+                      id="v-step-3"
                     >
                       <v-icon large> dashboard</v-icon>
                     </v-badge>
@@ -107,11 +113,32 @@ export default {
     return {
       messages: 0,
       today: moment().format("YYYY-MM-DD"),
+      steps: [
+        {
+          target: "#v-step-0", // We're using document.querySelector() under the hood
+          content: `Agrega nuevas tareas!`,
+        },
+        {
+          target: "#v-step-1",
+          content: "Edita la tarea cuando quieras!",
+        },
+        {
+          target: "#v-step-2",
+          content: "Elimina la tarea pero ten cuidado no podras recuperarla!",
+        },
+         {
+          target: "#v-step-3",
+          content: "Tienes alertas o nitificaciones!",
+        },
+      ],
     };
   },
   created() {
     this.getTareas();
     this.getPerfil();
+  },
+  mounted: function () {
+    this.$tours["myTour"].start();
   },
   methods: {
     ...mapActions(["getTareas", "eliminarTarea", "getPerfil"]),
@@ -119,6 +146,5 @@ export default {
   computed: {
     ...mapState(["tareas", "usuario", "perfil"]),
   },
-  
 };
 </script>
