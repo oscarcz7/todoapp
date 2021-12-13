@@ -24,14 +24,14 @@
         </v-btn>
         <v-toolbar-title class="d-none d-lg-block">{{ title }}</v-toolbar-title>
         <div class="flex-grow-1"></div>
-        <v-menu bottom right >
-          <template v-slot:activator="{ on }" >
+        <v-menu bottom right>
+          <template v-slot:activator="{ on }">
             <v-btn outlined v-on="on" id="v-step-4">
               <span>{{ typeToLabel[type] }}</span>
               <v-icon right>mdi-menu-down</v-icon>
             </v-btn>
           </template>
-          <v-list >
+          <v-list>
             <v-list-item @click="type = 'day'">
               <v-list-item-title>Dia</v-list-item-title>
             </v-list-item>
@@ -127,7 +127,7 @@
     <v-dialog v-model="dialogDate" max-width="700">
       <v-card>
         <v-container>
-           <v-form
+          <v-form
             @submit.prevent="
               agregarTarea({
                 name: name,
@@ -288,6 +288,8 @@ export default {
     end: null,
     start: null,
     estado: null,
+    hourend: null,
+    hourstart: null,
     color: "#1976D2", // default event color
     items: ["Por Hacer", "Item 2", "En Progreso", "Terminado"],
     options: [

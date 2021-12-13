@@ -95,8 +95,69 @@
       <v-main>
         <router-view></router-view>
       </v-main>
+
+
+      <v-app-bar bottom height="25" dense color="blue-grey darken-4" dark v-if="existeUsuario">
+        <span class="hidden-sm-and-up">
+          <v-app-bar-nav-icon
+            @click.stop="drawer = !drawer"
+          ></v-app-bar-nav-icon>
+        </span>
+        <v-spacer></v-spacer>
+       
+      </v-app-bar>
+
+      <v-navigation-drawer v-model="drawer" absolute bottom temporary>
+        <v-list nav dense>
+          <v-list-item-group
+            v-model="group"
+            active-class="deep-purple--text text--accent-4"
+            v-if="existeUsuario"
+          >
+            <v-list-item
+              v-for="item in menuItemsIn"
+              :key="item.title"
+              :to="item.path"
+            >
+              <v-list-item-icon>
+                <v-icon v-text="item.icon"></v-icon>
+              </v-list-item-icon>
+              <v-list-item-content>
+                <v-list-item-title v-text="item.title"></v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item @click="cerrarSesion">
+              <v-list-item-icon>
+                <v-icon>logout</v-icon>
+              </v-list-item-icon>
+              <v-list-item-content>
+                <v-list-item-title>Salir</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list-item-group>
+          <v-list-item-group
+            v-model="group"
+            active-class="deep-purple--text text--accent-4"
+            v-if="!existeUsuario"
+          >
+            <v-list-item
+              v-for="item in menuItems"
+              :key="item.title"
+              :to="item.path"
+              :class="item.class"
+            >
+              <v-list-item-icon>
+                <v-icon v-text="item.icon"></v-icon>
+              </v-list-item-icon>
+              <v-list-item-content>
+                <v-list-item-title v-text="item.title"></v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list-item-group>
+        </v-list>
+      </v-navigation-drawer>
     </v-card>
-    <v-tour name="myTour" :steps="steps"></v-tour>
+    
   </v-app>
 </template>
 
@@ -131,16 +192,7 @@ export default {
       ],
       drawer: false,
       group: null,
-      steps: [
-        {
-          target: ".v-step-0", // We're using document.querySelector() under the hood
-          content: `Registrate <strong>con el correo que mas te guste</strong>!`,
-        },
-        {
-          target: ".v-step-1",
-          content: "O ingresa si ya tienes tu cuenta!",
-        },
-      ],
+      
     };
   },
   watch: {
@@ -155,9 +207,7 @@ export default {
     ...mapGetters(["existeUsuario"]),
     ...mapState(["tareas"]),
   },
-  mounted: function () {
-    this.$tours["myTour"].start();
-  },
+  
   
 };
 </script>

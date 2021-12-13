@@ -89,6 +89,8 @@ export default {
       end: null,
       start: null,
       estado: null,
+      hourend: null,
+      hourstart: null,
       color: null, // default event color
       items: ["Por Hacer", "Item 2", "En Progreso", "Terminado"],
       options: [

@@ -1,14 +1,13 @@
 <template>
-  <v-container class="mt-4">
-    <v-tour name="myTour" :steps="steps"></v-tour>
-    <v-row>
+  <v-container class="mt-4" height="900">
+    <v-row class="my-5 mx-3">
       <h2 v-for="(item, index) in perfil" :key="index">
         Bienvenido {{ item.username }} {{ item.lastname }}
       </h2>
     </v-row>
-    <div class="container mt-3 mb-2">
-      <v-btn href="/agregar" text color="green">
-        <span class="mr-2" id="v-step-0">Agregar Tarea</span>
+    <div class="container mt-2 mb-2">
+      <v-btn href="/agregar" text color="green" id="v-step-0">
+        <span class="mr-2">Agregar Tarea</span>
       </v-btn>
     </div>
     <v-container>
@@ -102,6 +101,38 @@
         </v-col>
       </v-row>
     </v-container>
+    <v-container >
+      <v-tour name="myTour" :steps="steps">
+        <template slot-scope="tour">
+          <transition name="fade">
+            <v-step
+              v-if="tour.steps[tour.currentStep]"
+              :key="tour.currentStep"
+              :step="tour.steps[tour.currentStep]"
+              :previous-step="tour.previousStep"
+              :next-step="tour.nextStep"
+              :stop="tour.stop"
+              :skip="tour.skip"
+              :is-first="tour.isFirst"
+              :is-last="tour.isLast"
+              :labels="tour.labels"
+              class="d-none d-lg-block"
+            >
+              <template v-if="tour.currentStep === 2">
+                <div slot="actions">
+                  <button @click="tour.previousStep" class="btn btn-primary">
+                    Retroceder
+                  </button>
+                  <button @click="tour.nextStep" class="btn btn-primary">
+                    Siguiente
+                  </button>
+                </div>
+              </template>
+            </v-step>
+          </transition>
+        </template>
+      </v-tour>
+    </v-container>
   </v-container>
 </template>
 <script>
@@ -126,7 +157,7 @@ export default {
           target: "#v-step-2",
           content: "Elimina la tarea pero ten cuidado no podras recuperarla!",
         },
-         {
+        {
           target: "#v-step-3",
           content: "Tienes alertas o nitificaciones!",
         },
