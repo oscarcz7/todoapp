@@ -16,7 +16,7 @@
         <v-spacer></v-spacer>
         <v-row justify="end" class="hidden-xs-only" v-if="existeUsuario">
           <v-btn
-           @click="()=>{this.$router.go()}" to="/tableros"
+            to="/tableros"
             class="mr-3"
           >
             <v-icon left dark>dashboard</v-icon>
@@ -34,7 +34,7 @@
           </v-btn>
           <v-btn @click="cerrarSesion">
             <v-icon left dark>logout</v-icon>
-            SALIR
+            Salir
           </v-btn>
         </v-row>
         <v-row justify="end" class="hidden-xs-only" v-if="!existeUsuario">
@@ -58,6 +58,14 @@
             active-class="deep-purple--text text--accent-4"
             v-if="existeUsuario"
           >
+          <v-list-item to="/tableros">
+              <v-list-item-icon>
+                <v-icon>dashboard</v-icon>
+              </v-list-item-icon>
+              <v-list-item-content>
+                <v-list-item-title>Tableros</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
             <v-list-item
               v-for="item in menuItemsIn"
               :key="item.title"
@@ -89,7 +97,7 @@
               :key="item.title"
               :to="item.path"
               :class="item.class"
-              :click="location.reload()"
+              
             >
               <v-list-item-icon>
                 <v-icon v-text="item.icon"></v-icon>

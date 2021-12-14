@@ -456,7 +456,7 @@ export default new Vuex.Store({
     },
     cerrarSesion({ commit }) {
       auth.signOut().then(() => {
-        router.push("/acceso");
+        router.push("/");
       });
     },
     detectarUsuario({ commit }, usuarioLogueado) {
