@@ -19,27 +19,27 @@
             <v-text-field
               label="Fecha Inicio"
               type="date"
-              v-model="start"
+              v-model="tarea.start"
               class="form-control"
             />
 
             <v-text-field
               label="Hora Inicio"
               type="time"
-              v-model="hourstart"
+              v-model="tarea.hourstart"
               class="form-control"
             />
 
             <v-text-field
               label="Fecha Fin"
               type="date"
-              v-model="end"
+              v-model="tarea.end"
               class="form-control"
             />
             <v-text-field
               label="Hora Fin"
               type="time"
-              v-model="hourend"
+              v-model="tarea.hourend"
               class="form-control"
             />
             <v-select

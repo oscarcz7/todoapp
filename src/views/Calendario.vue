@@ -1,9 +1,8 @@
 <template>
-  <v-card class="mt-2">
-    <v-tour name="myTour" :steps="steps"></v-tour>
+  <v-card >
     <v-sheet height="74" class="mx-auto">
       <v-toolbar dense color="white">
-        <v-btn
+        <!-- <v-btn
           fab
           dark
           small
@@ -12,7 +11,7 @@
           id="v-step-0"
         >
           <v-icon dark> mdi-plus </v-icon>
-        </v-btn>
+        </v-btn> -->
         <v-btn outlined class="mx-2" @click="setToday" id="v-step-1">
           Hoy
         </v-btn>
@@ -49,7 +48,7 @@
       </v-toolbar>
     </v-sheet>
 
-    <v-dialog v-model="dialog" max-width="700">
+    <!-- <v-dialog v-model="dialog" max-width="700">
       <v-card>
         <v-container>
           <v-form
@@ -197,7 +196,7 @@
           </v-form>
         </v-container>
       </v-card>
-    </v-dialog>
+    </v-dialog> -->
 
     <v-sheet height="700" width="98%" class="mx-auto">
       <v-calendar
@@ -265,6 +264,7 @@
         </v-card>
       </v-menu>
     </v-sheet>
+    
   </v-card>
 </template>
 
@@ -273,6 +273,7 @@ import { mapActions, mapState } from "vuex";
 
 export default {
   data: () => ({
+    
     today: new Date().toISOString().substr(0, 10),
     focus: new Date().toISOString().substr(0, 10),
     type: "month",
@@ -304,32 +305,6 @@ export default {
     events: [],
     dialog: false,
     dialogDate: false,
-    steps: [
-      {
-        target: "#v-step-0", // We're using document.querySelector() under the hood
-        content: `Agrega nuevas tareas a tu calendario`,
-      },
-      {
-        target: "#v-step-1",
-        content: "Si te perdiste regresa a la marca de este dia",
-      },
-      {
-        target: "#v-step-2",
-        content: "Regresa un dia, semana! ",
-      },
-      {
-        target: "#v-step-3",
-        content: "Adelanta un dia, semana! ",
-      },
-      {
-        target: "#v-step-4",
-        content: "Selecciona la vista que necesites!",
-      },
-      {
-        target: "#v-step-5",
-        content: "Visualiza tus tareas, editalas o eliminalas!",
-      },
-    ],
   }),
   computed: {
     title() {

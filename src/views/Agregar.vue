@@ -7,6 +7,7 @@
           <v-form
             @submit.prevent="
               agregarTarea({
+                tableroid: tableroid,
                 name: name,
                 descripcion: descripcion,
                 start: start,
@@ -56,6 +57,13 @@
               v-model="hourend"
               class="form-control"
             />
+            <v-text-field
+              label="Tablero"
+              type="text"
+              v-model="tableroid"
+              disabled
+              class="form-control"
+            />
             <v-select
               label="Estado"
               name="estado"
@@ -68,6 +76,7 @@
               type="color"
               label="color (click to open color menu)"
             ></v-text-field>
+
             <v-btn type="submit" elevation="2" block color="primary">
               Crear
             </v-btn>
@@ -91,6 +100,7 @@ export default {
       estado: null,
       hourend: null,
       hourstart: null,
+      tableroid: this.$route.params.id,
       color: null, // default event color
       items: ["Por Hacer", "Item 2", "En Progreso", "Terminado"],
       options: [

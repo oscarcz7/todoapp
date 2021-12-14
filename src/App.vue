@@ -16,6 +16,14 @@
         <v-spacer></v-spacer>
         <v-row justify="end" class="hidden-xs-only" v-if="existeUsuario">
           <v-btn
+           @click="()=>{this.$router.go()}" to="/tableros"
+            class="mr-3"
+          >
+            <v-icon left dark>dashboard</v-icon>
+            Tableros
+          </v-btn>
+          
+          <v-btn
             v-for="item in menuItemsIn"
             :key="item.title"
             :to="item.path"
@@ -81,6 +89,7 @@
               :key="item.title"
               :to="item.path"
               :class="item.class"
+              :click="location.reload()"
             >
               <v-list-item-icon>
                 <v-icon v-text="item.icon"></v-icon>
@@ -96,68 +105,82 @@
         <router-view></router-view>
       </v-main>
 
+      <v-bottom-sheet v-model="sheet" hide-overlay>
+        <v-app-bar
+          bottom
+          height="25"
+          dense
+          color="blue-grey darken-4"
+          dark
+          v-if="existeUsuario"
+        >
+          <span class="hidden-sm-and-up">
+            <v-app-bar-nav-icon
+              @click.stop="drawer = !drawer"
+            ></v-app-bar-nav-icon>
+          </span>
+          <v-spacer></v-spacer>
+        </v-app-bar>
 
-      <v-app-bar bottom height="25" dense color="blue-grey darken-4" dark v-if="existeUsuario">
-        <span class="hidden-sm-and-up">
-          <v-app-bar-nav-icon
-            @click.stop="drawer = !drawer"
-          ></v-app-bar-nav-icon>
-        </span>
-        <v-spacer></v-spacer>
-       
-      </v-app-bar>
-
-      <v-navigation-drawer v-model="drawer" absolute bottom temporary>
-        <v-list nav dense>
-          <v-list-item-group
-            v-model="group"
-            active-class="deep-purple--text text--accent-4"
-            v-if="existeUsuario"
-          >
-            <v-list-item
-              v-for="item in menuItemsIn"
-              :key="item.title"
-              :to="item.path"
+        <v-navigation-drawer v-model="drawer" absolute bottom temporary>
+          <v-list nav dense>
+            <v-list-item-group
+              v-model="group"
+              active-class="deep-purple--text text--accent-4"
+              v-if="existeUsuario"
             >
-              <v-list-item-icon>
-                <v-icon v-text="item.icon"></v-icon>
-              </v-list-item-icon>
-              <v-list-item-content>
-                <v-list-item-title v-text="item.title"></v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-            <v-list-item @click="cerrarSesion">
-              <v-list-item-icon>
-                <v-icon>logout</v-icon>
-              </v-list-item-icon>
-              <v-list-item-content>
-                <v-list-item-title>Salir</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-          </v-list-item-group>
-          <v-list-item-group
-            v-model="group"
-            active-class="deep-purple--text text--accent-4"
-            v-if="!existeUsuario"
-          >
-            <v-list-item
-              v-for="item in menuItems"
-              :key="item.title"
-              :to="item.path"
-              :class="item.class"
+              <v-list-item @click="location.reload();" to="/tableros">
+                <v-list-item-icon>
+                  <v-icon>dashboard</v-icon>
+                </v-list-item-icon>
+                <v-list-item-content>
+                  <v-list-item-title>Tableros</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item
+                v-for="item in menuItemsIn"
+                :key="item.title"
+                :to="item.path"
+              >
+                <v-list-item-icon>
+                  <v-icon v-text="item.icon"></v-icon>
+                </v-list-item-icon>
+                <v-list-item-content>
+                  <v-list-item-title v-text="item.title"></v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item @click="cerrarSesion">
+                <v-list-item-icon>
+                  <v-icon>logout</v-icon>
+                </v-list-item-icon>
+                <v-list-item-content>
+                  <v-list-item-title>Salir</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list-item-group>
+            <v-list-item-group
+              v-model="group"
+              active-class="deep-purple--text text--accent-4"
+              v-if="!existeUsuario"
             >
-              <v-list-item-icon>
-                <v-icon v-text="item.icon"></v-icon>
-              </v-list-item-icon>
-              <v-list-item-content>
-                <v-list-item-title v-text="item.title"></v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-          </v-list-item-group>
-        </v-list>
-      </v-navigation-drawer>
+              <v-list-item
+                v-for="item in menuItems"
+                :key="item.title"
+                :to="item.path"
+                :class="item.class"
+              >
+                <v-list-item-icon>
+                  <v-icon v-text="item.icon"></v-icon>
+                </v-list-item-icon>
+                <v-list-item-content>
+                  <v-list-item-title v-text="item.title"></v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list-item-group>
+          </v-list>
+        </v-navigation-drawer>
+      </v-bottom-sheet>
     </v-card>
-    
   </v-app>
 </template>
 
@@ -168,6 +191,7 @@ export default {
   name: "App",
   data() {
     return {
+      sheet: true,
       show: true,
       today: "",
       appTitle: "KANBAN TEAM",
@@ -186,13 +210,12 @@ export default {
         },
       ],
       menuItemsIn: [
-        { title: "Inicio", path: "/inicio", icon: "home" },
-        { title: "Tablero", path: "/tablero", icon: "dashboard" },
+        // { title: "Tableros", path: "/tableros", icon: "dashboard" },
+        { title: "Tareas", path: "/inicio", icon: "home" },
         { title: "Calendario", path: "/calendario", icon: "calendar_today" },
       ],
       drawer: false,
       group: null,
-      
     };
   },
   watch: {
@@ -207,7 +230,5 @@ export default {
     ...mapGetters(["existeUsuario"]),
     ...mapState(["tareas"]),
   },
-  
-  
 };
 </script>

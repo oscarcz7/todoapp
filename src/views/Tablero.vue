@@ -1,25 +1,14 @@
 <template>
   <div>
-    <v-row align="center" justify="space-around">
-      <v-btn outlined color="blue" large bottom left @click="dialog = !dialog">
-        <v-icon left> edit</v-icon>
-        Fondo
-      </v-btn>
-    </v-row>
-    <v-container mt-4 :style="{ 'background-color': color, width: '100%' }">
+    <v-container mt-4 :style="`background-color: ${tablero.color}` ">
       <v-row>
         <v-col>
           <v-container>
             <v-row>
-              <v-col v-for="column in columns" :key="column.title">
+              <v-col v-for="column in columns2" :key="column.title">
                 <h3 class="text-center">{{ column.title }}</h3>
                 <!-- Draggable component comes from vuedraggable. It provides drag & drop functionality -->
-                <draggable
-                  :list="column.tasks"
-                  :animation="200"
-                  ghost-class="ghost-card"
-                  group="tasks"
-                >
+                
                   <!-- Each element from here will be draggable and animated. Note :key is very important here to be unique both for draggable and animations to be smooth & consistent. -->
                   <task-card
                     v-for="task in column.tasks"
@@ -27,20 +16,13 @@
                     :task="task"
                     class="mt-3 cursor-move"
                   ></task-card>
-                  <!-- </transition-group> -->
-                </draggable>                
+                
               </v-col>
             </v-row>
           </v-container>
         </v-col>
       </v-row>
-      <v-dialog v-model="dialog" width="300">
-        <v-card>
-          <v-color-picker elevation="15" @input="onInput"></v-color-picker>
-        </v-card>
-      </v-dialog>
     </v-container>
-    
   </div>
 </template>
 
@@ -56,27 +38,33 @@ export default {
   },
   data() {
     return {
+      id: this.$route.params.id,
       dialog: false,
       color: null,
+      id2: null
     };
   },
-  mounted() {
-    this.addColumns();
-  },
+ 
   methods: {
     onInput(val) {
       this.color = val.hex;
     },
-    ...mapActions(["getTareasIP", "getTareasPH", "getTareasT", "addColumns"]),
+    validando(id) {
+      if(this.id !== this.identificador){
+        this.id2 = this.id
+      }
+    },
+    ...mapActions([  "getTablero", "getTareasTablero", "validar"]),
   },
   created() {
-    this.getTareasIP();
-    this.getTareasPH();
-    this.getTareasT();
-    this.addColumns();
+    
+    this.getTablero(this.id);
+    this.getTareasTablero(this.id);
+    this.validar(this.id);
+    
   },
   computed: {
-    ...mapState(["tareasIP", "tareasPH", "tareasT", "columns"]),
+    ...mapState([ "columns2", "tablero", "identificador"]),
   },
 };
 </script>

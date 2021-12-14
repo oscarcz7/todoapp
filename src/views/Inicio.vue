@@ -5,11 +5,12 @@
         Bienvenido {{ item.username }} {{ item.lastname }}
       </h2>
     </v-row>
-    <div class="container mt-2 mb-2">
-      <v-btn href="/agregar" text color="green" id="v-step-0">
-        <span class="mr-2">Agregar Tarea</span>
-      </v-btn>
-    </div>
+    <v-row class="my-5 mx-3">
+      <h2 >
+        Este es su listado general de tareas
+      </h2>
+    </v-row>
+    
     <v-container>
       <v-row>
         <v-col>
@@ -44,7 +45,7 @@
                       dark
                       small
                       color="cyan"
-                      id="v-step-1"
+                      id="v-step-0"
                     >
                       <v-icon dark> mdi-pencil </v-icon>
                     </v-btn>
@@ -57,7 +58,7 @@
                       dark
                       small
                       color="red"
-                      id="v-step-2"
+                      id="v-step-1"
                     >
                       <v-icon dark> mdi-minus </v-icon>
                     </v-btn>
@@ -69,7 +70,7 @@
                       :value="1"
                       color="red"
                       overlap
-                      id="v-step-3"
+                      id="v-step-2"
                     >
                       <v-icon large> dashboard</v-icon>
                     </v-badge>
@@ -79,7 +80,7 @@
                       :value="1"
                       color="orange"
                       overlap
-                      id="v-step-3"
+                      id="v-step-2"
                     >
                       <v-icon large> dashboard</v-icon>
                     </v-badge>
@@ -89,7 +90,7 @@
                       :value="1"
                       color="green"
                       overlap
-                      id="v-step-3"
+                      id="v-step-2"
                     >
                       <v-icon large> dashboard</v-icon>
                     </v-badge>
@@ -133,6 +134,7 @@
         </template>
       </v-tour>
     </v-container>
+  
   </v-container>
 </template>
 <script>
@@ -142,30 +144,28 @@ export default {
   name: "Inicio",
   data() {
     return {
+      id: this.$route.params.id,
       messages: 0,
       today: moment().format("YYYY-MM-DD"),
       steps: [
+        
         {
-          target: "#v-step-0", // We're using document.querySelector() under the hood
-          content: `Agrega nuevas tareas!`,
-        },
-        {
-          target: "#v-step-1",
+          target: "#v-step-0",
           content: "Edita la tarea cuando quieras!",
         },
         {
-          target: "#v-step-2",
+          target: "#v-step-1",
           content: "Elimina la tarea pero ten cuidado no podras recuperarla!",
         },
         {
-          target: "#v-step-3",
+          target: "#v-step-2",
           content: "Tienes alertas o nitificaciones!",
         },
       ],
     };
   },
   created() {
-    this.getTareas();
+    this.getTareas(this.id);
     this.getPerfil();
   },
   mounted: function () {
