@@ -102,7 +102,7 @@
         </v-col>
       </v-row>
     </v-container>
-    <v-container >
+    <!-- <v-container >
       <v-tour name="myTour" :steps="steps">
         <template slot-scope="tour">
           <transition name="fade">
@@ -133,7 +133,7 @@
           </transition>
         </template>
       </v-tour>
-    </v-container>
+    </v-container> -->
   
   </v-container>
 </template>
@@ -144,7 +144,7 @@ export default {
   name: "Inicio",
   data() {
     return {
-      id: this.$route.params.id,
+      id: localStorage.param,
       messages: 0,
       today: moment().format("YYYY-MM-DD"),
       steps: [
@@ -165,14 +165,14 @@ export default {
     };
   },
   created() {
-    this.getTareas(this.id);
+    this.getTareasT(this.id);
     this.getPerfil();
   },
   mounted: function () {
     this.$tours["myTour"].start();
   },
   methods: {
-    ...mapActions(["getTareas", "eliminarTarea", "getPerfil"]),
+    ...mapActions(["getTareasT", "eliminarTarea", "getPerfil"]),
   },
   computed: {
     ...mapState(["tareas", "usuario", "perfil"]),

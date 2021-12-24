@@ -11,9 +11,9 @@
                 name: name,
                 descripcion: descripcion,
                 start: start,
-                hourstart: hourstart,
+
                 end: end,
-                hourend: hourend,
+
                 estado: estado,
                 color: color,
               })
@@ -33,30 +33,18 @@
             />
             <v-text-field
               label="Fecha Inicio"
-              type="date"
+              type="datetime-local"
               v-model="start"
               class="form-control"
             />
 
             <v-text-field
-              label="Hora Inicio"
-              type="time"
-              v-model="hourstart"
-              class="form-control"
-            />
-
-            <v-text-field
               label="Fecha Fin"
-              type="date"
+              type="datetime-local"
               v-model="end"
               class="form-control"
             />
-            <v-text-field
-              label="Hora Fin"
-              type="time"
-              v-model="hourend"
-              class="form-control"
-            />
+
             <v-text-field
               label="Tablero"
               type="text"
@@ -98,8 +86,6 @@ export default {
       end: null,
       start: null,
       estado: null,
-      hourend: null,
-      hourstart: null,
       tableroid: this.$route.params.id,
       color: null, // default event color
       items: ["Por Hacer", "Item 2", "En Progreso", "Terminado"],

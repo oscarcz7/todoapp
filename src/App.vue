@@ -23,15 +23,7 @@
             Tableros
           </v-btn>
           
-          <v-btn
-            v-for="item in menuItemsIn"
-            :key="item.title"
-            :to="item.path"
-            class="mr-3"
-          >
-            <v-icon left dark>{{ item.icon }}</v-icon>
-            {{ item.title }}
-          </v-btn>
+         
           <v-btn @click="cerrarSesion">
             <v-icon left dark>logout</v-icon>
             Salir
@@ -66,18 +58,7 @@
                 <v-list-item-title>Tableros</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
-            <v-list-item
-              v-for="item in menuItemsIn"
-              :key="item.title"
-              :to="item.path"
-            >
-              <v-list-item-icon>
-                <v-icon v-text="item.icon"></v-icon>
-              </v-list-item-icon>
-              <v-list-item-content>
-                <v-list-item-title v-text="item.title"></v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
+            
             <v-list-item @click="cerrarSesion">
               <v-list-item-icon>
                 <v-icon>logout</v-icon>
@@ -145,18 +126,7 @@
                   <v-list-item-title>Tableros</v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
-              <v-list-item
-                v-for="item in menuItemsIn"
-                :key="item.title"
-                :to="item.path"
-              >
-                <v-list-item-icon>
-                  <v-icon v-text="item.icon"></v-icon>
-                </v-list-item-icon>
-                <v-list-item-content>
-                  <v-list-item-title v-text="item.title"></v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
+              
               <v-list-item @click="cerrarSesion">
                 <v-list-item-icon>
                   <v-icon>logout</v-icon>
@@ -217,11 +187,7 @@ export default {
           class: "v-step-1",
         },
       ],
-      menuItemsIn: [
-        // { title: "Tableros", path: "/tableros", icon: "dashboard" },
-        { title: "Tareas", path: "/inicio", icon: "home" },
-        { title: "Calendario", path: "/calendario", icon: "calendar_today" },
-      ],
+      
       drawer: false,
       group: null,
     };

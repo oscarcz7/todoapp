@@ -17,31 +17,17 @@
                 class="form-control"
               />
               <v-text-field
-              label="Fecha Inicio"
-              type="date"
-              v-model="tarea.start"
-              class="form-control"
-            />
-
-            <v-text-field
-              label="Hora Inicio"
-              type="time"
-              v-model="tarea.hourstart"
-              class="form-control"
-            />
-
-            <v-text-field
-              label="Fecha Fin"
-              type="date"
-              v-model="tarea.end"
-              class="form-control"
-            />
-            <v-text-field
-              label="Hora Fin"
-              type="time"
-              v-model="tarea.hourend"
-              class="form-control"
-            />
+                label="Fecha Inicio"
+                type="date-local"
+                v-model="tarea.start"
+                class="form-control"
+              />
+              <v-text-field
+                label="Fecha Fin"
+                type="datetime-local"
+                v-model="tarea.end"
+                class="form-control"
+              />
               <v-select
                 label="Estado"
                 name="estado"

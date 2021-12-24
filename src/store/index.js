@@ -33,9 +33,7 @@ export default new Vuex.Store({
         title: "Terminado",
         tasks: [],
       },
-    ],
-    idParam: "",
-    identificador:null
+    ]
   },
   mutations: {
     setTareas(state, payload) {
@@ -83,22 +81,27 @@ export default new Vuex.Store({
     setNotificaion(state, payload) {
       state.notifiacion = payload;
     },
-    setColumns(state, payload) {
-      state.columns = payload;
-    },
-    setId(state, payload) {
-      state.idParam = payload;
-    },
-    setIdentificador(state, payload) {
-      state.identificador = payload;
+    setEliminarTablero(state, payload) {
+      state.tableros = state.tableros.filter((item) => item.id !== payload);
     }
   },
   actions: {
-    validar({ commit, state}, id){
-
-      commit('setIdentificador', id)
+    // create and get perfil data
+    crearPerfil({ commit, state }, perfil) {
+      db.collection("perfil")
+        .add({
+          username: perfil.username,
+          lastname: perfil.lastname,
+          age: perfil.age,
+          birthdate: perfil.birthdate,
+          email: state.usuario.email,
+        })
+        .then((doc) => {
+          router.push({ name: "Tableros" });
+        })
+        .catch((error) => console.log(error));
     },
-    //PERFIL
+
     getPerfil({ commit, state }) {
       const perfils = [];
       let correo = state.usuario.email;
@@ -115,7 +118,19 @@ export default new Vuex.Store({
         })
         .catch((error) => console.log(error));
     },
-    //TABLEROS
+
+    // Boards actions
+    eliminarTablero({ commit, state }, id) {
+      db.collection("tableros")
+        .doc(id)
+        .delete()
+        .then(() => {
+          commit("setEliminarTablero", id);
+          location.reload();
+        })
+        .catch((error) => console.log(error));
+    },
+
     agregarTablero({ commit, state }, tablero) {
       db.collection("tableros")
         .add({
@@ -139,6 +154,21 @@ export default new Vuex.Store({
           let tablero = doc.data();
           tablero.id = doc.id;
           commit("setTablero", tablero);
+        })
+        .catch((error) => console.log(error));
+    },
+    editarTablero({ commit, state }, tablero) {
+      db.collection("tableros")
+        .doc(tablero.id)
+        .update({
+          name: tablero.name,
+          color: tablero.color,
+          sharedwith1: tablero.sharedwith1,
+          sharedwith2: tablero.sharedwith2,
+          sharedwith3: tablero.sharedwith3,
+        })
+        .then(() => {
+          location.reload();
         })
         .catch((error) => console.log(error));
     },
@@ -209,11 +239,12 @@ export default new Vuex.Store({
         })
         .catch((error) => console.log(error));
     },
-    //TAREAS
+
+    // return general tasks for table and 
     getTareas({ commit, state }) {
       const tareas = [];
 
-      db.collection(state.usuario.email)
+      db.collection("tareas")
         .get()
         .then((res) => {
           res.forEach((doc) => {
@@ -226,22 +257,41 @@ export default new Vuex.Store({
         })
         .catch((error) => console.log(error));
     },
-    getTareasTablero({ commit, state }, id) {
+    getTareasT({ commit, state }, id) {
       const tareas = [];
 
-      db.collection(state.usuario.email)
-        .where("tableroid", "==", id)
+      db.collection("tareas")
+      .where("tableroid", "==", id)
         .get()
         .then((res) => {
-          const tareasPH = [];
-          const tareasIP = [];
-          const tareasT = [];
           res.forEach((doc) => {
             let tarea = doc.data();
             tarea.id = doc.id;
             tareas.push(tarea);
           });
           console.log("tareas", tareas);
+          commit("setTareas", tareas);
+        })
+        .catch((error) => console.log(error));
+    },
+  
+
+    getTareasTablero({ commit, state }, id) {
+      
+      const tareas = [];
+      const tareasPH = [];
+      const tareasIP = [];
+      const tareasT = [];
+      db.collection("tareas")
+        .where("tableroid", "==", id)
+        .get()
+        .then((res) => {
+          
+          res.forEach((doc) => {
+            let tarea = doc.data();
+            tarea.id = doc.id;
+            tareas.push(tarea);
+          });
           tareas.forEach((tarea) => {
             if (tarea.estado == "Por Hacer") {
               tareasPH.push(tarea);
@@ -265,7 +315,7 @@ export default new Vuex.Store({
     },
 
     getTarea({ commit, state }, id) {
-      db.collection(state.usuario.email)
+      db.collection("tareas")
         .doc(id)
         .get()
         .then((doc) => {
@@ -275,15 +325,14 @@ export default new Vuex.Store({
         })
         .catch((error) => console.log(error));
     },
+
     editarTarea({ commit, state }, tarea) {
-      db.collection(state.usuario.email)
+      db.collection("tareas")
         .doc(tarea.id)
         .update({
           name: tarea.name,
           estado: tarea.estado,
           start: tarea.start,
-          hourend: tarea.hourend,
-          hourstart: tarea.hourstart,
           end: tarea.end,
           color: tarea.color,
           descripcion: tarea.descripcion,
@@ -294,15 +343,13 @@ export default new Vuex.Store({
         .catch((error) => console.log(error));
     },
     editarTareaP({ commit, state }, tarea) {
-      db.collection(state.usuario.email)
+      db.collection("tareas")
         .doc(tarea.id)
         .update({
           name: tarea.name,
           estado: tarea.estado,
           start: tarea.start,
           end: tarea.end,
-          hourend: tarea.hourend,
-          hourstart: tarea.hourstart,
           color: tarea.color,
           descripcion: tarea.descripcion,
         })
@@ -312,15 +359,14 @@ export default new Vuex.Store({
         .catch((error) => console.log(error));
     },
     editarTareaC({ commit, state }, tarea) {
-      db.collection(state.usuario.email)
+      db.collection("tareas")
         .doc(tarea.id)
         .update({
           name: tarea.name,
           estado: tarea.estado,
           start: tarea.start,
           end: tarea.end,
-          hourend: tarea.hourend,
-          hourstart: tarea.hourstart,
+          
           color: tarea.color,
           descripcion: tarea.descripcion,
         })
@@ -331,14 +377,13 @@ export default new Vuex.Store({
     },
 
     agregarTarea({ commit, state }, nameTarea) {
-      db.collection(state.usuario.email)
+      db.collection("tareas")
         .add({
           name: nameTarea.name,
           descripcion: nameTarea.descripcion,
           estado: nameTarea.estado,
           end: nameTarea.end,
-          hourend: nameTarea.hourend,
-          hourstart: nameTarea.hourstart,
+          
           start: nameTarea.start,
           color: nameTarea.color,
           tableroid: nameTarea.tableroid,
@@ -356,8 +401,6 @@ export default new Vuex.Store({
           estado: nameTarea.estado,
           end: nameTarea.end,
           start: nameTarea.start,
-          hourend: nameTarea.hourend,
-          hourstart: nameTarea.hourstart,
           color: nameTarea.color,
         })
         .then((doc) => {
@@ -365,8 +408,9 @@ export default new Vuex.Store({
         })
         .catch((error) => console.log(error));
     },
+
     eliminarTarea({ commit, state }, id) {
-      db.collection(state.usuario.email)
+      db.collection("tareas")
         .doc(id)
         .delete()
         .then(() => {
@@ -376,7 +420,7 @@ export default new Vuex.Store({
         .catch((error) => console.log(error));
     },
     eliminarTareaC({ commit, state }, id) {
-      db.collection(state.usuario.email)
+      db.collection("tareas")
         .doc(id)
         .delete()
         .then(() => {
@@ -386,7 +430,7 @@ export default new Vuex.Store({
         .catch((error) => console.log(error));
     },
     eliminarTareaT({ commit, state }, id) {
-      db.collection(state.usuario.email)
+      db.collection("tareas")
         .doc(id)
         .delete()
         .then(() => {
@@ -395,6 +439,9 @@ export default new Vuex.Store({
         })
         .catch((error) => console.log(error));
     },
+
+
+    // user actions creation and logging
     crearUsuario({ commit }, usuario) {
       auth
         .createUserWithEmailAndPassword(usuario.email, usuario.password)
@@ -424,20 +471,7 @@ export default new Vuex.Store({
           commit("setError", error.message);
         });
     },
-    crearPerfil({ commit, state }, perfil) {
-      db.collection("perfil")
-        .add({
-          username: perfil.username,
-          lastname: perfil.lastname,
-          age: perfil.age,
-          birthdate: perfil.birthdate,
-          email: state.usuario.email,
-        })
-        .then((doc) => {
-          router.push({ name: "Tableros" });
-        })
-        .catch((error) => console.log(error));
-    },
+    
     ingresoUsuario({ commit }, usuario) {
       auth
         .signInWithEmailAndPassword(usuario.email, usuario.password)

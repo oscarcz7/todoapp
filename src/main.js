@@ -5,8 +5,10 @@ import router from "./router";
 import store from "./store";
 import VueTextareaAutosize from 'vue-textarea-autosize'
 import VueTour from 'vue-tour'
-
+import VueSessionStorage from 'vue-sessionstorage'
 require('vue-tour/dist/vue-tour.css')
+
+Vue.use(VueSessionStorage)
 
 Vue.use(VueTour)
 Vue.use(VueTextareaAutosize)

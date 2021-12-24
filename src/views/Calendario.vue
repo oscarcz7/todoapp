@@ -48,157 +48,7 @@
       </v-toolbar>
     </v-sheet>
 
-    <!-- <v-dialog v-model="dialog" max-width="700">
-      <v-card>
-        <v-container>
-          <v-form
-            @submit.prevent="
-              agregarTarea({
-                name: name,
-                descripcion: descripcion,
-                start: start,
-                hourstart: hourstart,
-                end: end,
-                hourend: hourend,
-                estado: estado,
-                color: color,
-              })
-            "
-          >
-            <v-text-field
-              label="Titulo"
-              type="text"
-              v-model="name"
-              class="form-control"
-            />
-            <v-text-field
-              label="Detalle"
-              type="text"
-              v-model="descripcion"
-              class="form-control"
-            />
-            <v-text-field
-              label="Fecha Inicio"
-              type="date"
-              v-model="start"
-              class="form-control"
-            />
-
-            <v-text-field
-              label="Hora Inicio"
-              type="time"
-              v-model="hourstart"
-              class="form-control"
-            />
-
-            <v-text-field
-              label="Fecha Fin"
-              type="date"
-              v-model="end"
-              class="form-control"
-            />
-            <v-text-field
-              label="Hora Fin"
-              type="time"
-              v-model="hourend"
-              class="form-control"
-            />
-            <v-select
-              label="Estado"
-              name="estado"
-              class="form-control"
-              v-model="estado"
-              :items="options"
-            ></v-select>
-            <v-text-field
-              v-model="color"
-              type="color"
-              label="color (click to open color menu)"
-            ></v-text-field>
-            <v-btn type="submit" elevation="2" block color="primary">
-              Crear
-            </v-btn>
-          </v-form>
-        </v-container>
-      </v-card>
-    </v-dialog>
-
-    <v-dialog v-model="dialogDate" max-width="700">
-      <v-card>
-        <v-container>
-          <v-form
-            @submit.prevent="
-              agregarTarea({
-                name: name,
-                descripcion: descripcion,
-                start: start,
-                hourstart: hourstart,
-                end: end,
-                hourend: hourend,
-                estado: estado,
-                color: color,
-              })
-            "
-          >
-            <v-text-field
-              label="Titulo"
-              type="text"
-              v-model="name"
-              class="form-control"
-            />
-            <v-text-field
-              label="Detalle"
-              type="text"
-              v-model="descripcion"
-              class="form-control"
-            />
-            <v-text-field
-              label="Fecha Inicio"
-              type="date"
-              v-model="start"
-              class="form-control"
-            />
-
-            <v-text-field
-              label="Hora Inicio"
-              type="time"
-              v-model="hourstart"
-              class="form-control"
-            />
-
-            <v-text-field
-              label="Fecha Fin"
-              type="date"
-              v-model="end"
-              class="form-control"
-            />
-            <v-text-field
-              label="Hora Fin"
-              type="time"
-              v-model="hourend"
-              class="form-control"
-            />
-            <v-select
-              label="Estado"
-              name="estado"
-              class="form-control"
-              v-model="estado"
-              :items="options"
-            ></v-select>
-            <v-text-field
-              v-model="color"
-              type="color"
-              label="color (click to open color menu)"
-            ></v-text-field>
-            <v-btn type="submit" elevation="2" block color="primary">
-              Crear
-            </v-btn>
-          </v-form>
-        </v-container>
-      </v-card>
-    </v-dialog> -->
-
-    <v-sheet height="700" width="98%" class="mx-auto">
+       <v-sheet height="700" width="98%" class="mx-auto">
       <v-calendar
         ref="calendar"
         v-model="focus"
@@ -273,7 +123,7 @@ import { mapActions, mapState } from "vuex";
 
 export default {
   data: () => ({
-    
+    id: localStorage.param,
     today: new Date().toISOString().substr(0, 10),
     focus: new Date().toISOString().substr(0, 10),
     type: "month",
@@ -289,8 +139,6 @@ export default {
     end: null,
     start: null,
     estado: null,
-    hourend: null,
-    hourstart: null,
     color: "#1976D2", // default event color
     items: ["Por Hacer", "Item 2", "En Progreso", "Terminado"],
     options: [
@@ -340,10 +188,10 @@ export default {
     ...mapState(["tareas", "usuario"]),
   },
   created() {
-    this.getTareas();
+    this.getTareasT(this.id);
   },
   methods: {
-    ...mapActions(["agregarTareaC", "getTareas", "eliminarTareaC"]),
+    ...mapActions(["agregarTareaC", "getTareasT", "eliminarTareaC"]),
 
     setDialogDate({ date }) {
       this.dialogDate = true;

@@ -18,28 +18,14 @@
             />
             <v-text-field
               label="Fecha Inicio"
-              type="date"
-              v-model="start"
+              type="date-local"
+              v-model="tarea.start"
               class="form-control"
             />
-
-            <v-text-field
-              label="Hora Inicio"
-              type="time"
-              v-model="hourstart"
-              class="form-control"
-            />
-
             <v-text-field
               label="Fecha Fin"
-              type="date"
-              v-model="end"
-              class="form-control"
-            />
-            <v-text-field
-              label="Hora Fin"
-              type="time"
-              v-model="hourend"
+              type="datetime-local"
+              v-model="tarea.end"
               class="form-control"
             />
             <v-select
@@ -50,7 +36,7 @@
               :items="options"
             ></v-select>
             <v-text-field
-              v-model="color"
+              v-model="tarea.color"
               type="color"
               label="color (click to open color menu)"
             ></v-text-field>

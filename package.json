@@ -13,6 +13,7 @@
     "vue": "^2.6.11",
     "vue-moment": "^4.1.0",
     "vue-router": "^3.1.6",
+    "vue-sessionstorage": "^1.0.0",
     "vue-textarea-autosize": "^1.0.4",
     "vue-tour": "^2.0.0",
     "vuedraggable": "^2.24.3",
